@@ -1,11 +1,18 @@
 package com.practcias.microservicio.pagos.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.practcias.microservicio.pagos.cliente.ClienteServicio;
+import com.practcias.microservicio.pagos.cliente.ClienteUsuario;
 import com.practcias.microservicio.pagos.entity.ReciboEntity;
+import com.practcias.microservicio.pagos.entity.ServiciosEnReciboEntity;
+import com.practcias.microservicio.pagos.model.Cuenta;
+import com.practcias.microservicio.pagos.model.Servicio;
 import com.practcias.microservicio.pagos.repository.ReciboRepository;
 import com.practcias.microservicio.pagos.repository.ServiciosEnReciboRepository;
 
@@ -18,7 +25,13 @@ public class ReciboServiceImpl implements ReciboService {
 
 	@Autowired
 	ServiciosEnReciboRepository serviciosEnReciboRepository;
-
+	
+	@Autowired
+	ClienteServicio clienteServicio;
+	
+	@Autowired
+	ClienteUsuario clienteUsuario;
+	
 	@Override
 	public ArrayList<ReciboEntity> encuentraTodosLosRecibos() {
 		return (ArrayList<ReciboEntity>) reciboRepository.findAll();
@@ -31,6 +44,7 @@ public class ReciboServiceImpl implements ReciboService {
 			return reciboDB;
 		}
 		recibo.setEstado("Creado");
+		
 		return reciboRepository.save(recibo);
 	}
 
@@ -60,7 +74,20 @@ public class ReciboServiceImpl implements ReciboService {
 
 	@Override
 	public ReciboEntity obtenRecibo(Long id) {
-		return reciboRepository.findById(id).orElse(null);
+		ReciboEntity recibo = reciboRepository.findById(id).orElse(null);
+		
+		if(recibo!=null) {
+			 Cuenta cuenta= clienteUsuario.obtenerCuenta(recibo.getCuentaId()).getBody();
+	            recibo.setCuenta(cuenta);
+	            List<ServiciosEnReciboEntity> listaDeServicios = recibo.getServicios().stream()
+	            		.map(serviciosEnReciboEntity -> {
+	                Servicio servicio = clienteServicio.obtenerUnServicio(serviciosEnReciboEntity.getServicioId());
+	                serviciosEnReciboEntity.setServicio(servicio);
+	                return serviciosEnReciboEntity;
+	            }).collect(Collectors.toList());
+	            recibo.setServicios(listaDeServicios);
+	        }
+	 return recibo ;
 	}
 
 }

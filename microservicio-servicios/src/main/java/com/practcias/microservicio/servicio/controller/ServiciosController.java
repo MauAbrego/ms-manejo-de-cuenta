@@ -20,22 +20,24 @@ import com.practcias.microservicio.servicio.service.ServiciosService;
 public class ServiciosController {
 	@Autowired
 	ServiciosService serviciosService;
-
+	
+    // -------------------Trae todos los servicios--------------------------------------------
 	@GetMapping
 	public ArrayList<Servicios> obtenerTodosLosServicios() {
 		return serviciosService.listaTodosLosServicios();
 	}
-
+    // -------------------Trae un servicios--------------------------------------------
 	@GetMapping(path = "/{id}")
 	public Servicios obtenerUnServicio(@PathVariable Long id) {
 		return this.serviciosService.obtenUnServicio(id);
 	}
-
+    // -------------------Crea un servicios--------------------------------------------
 	@PostMapping
 	public Servicios crearUnservicio(@RequestBody Servicios servicios) {
 		return this.serviciosService.creaUnServicio(servicios);
 	}
-
+	
+    // -------------------Modifica los servicios--------------------------------------------
 	@PutMapping("/{id}")
 	public ResponseEntity<Servicios> actualizaUnServicio(@PathVariable("id") Long id,
 			@RequestBody Servicios servicios) {
@@ -46,7 +48,8 @@ public class ServiciosController {
 		}
 		return ResponseEntity.ok(serviciosDB);
 	}
-
+	
+    // -------------------Elimina los servicios--------------------------------------------
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Servicios> deleteProduct(@PathVariable("id") Long id) {
 		Servicios eliminaServicio = serviciosService.eliminaUnServicio(id);

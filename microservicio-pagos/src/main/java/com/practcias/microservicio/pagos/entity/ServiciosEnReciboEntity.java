@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Positive;
 
+import com.practcias.microservicio.pagos.model.Servicio;
+
 import lombok.Data;
 
 @Entity
@@ -24,6 +26,9 @@ public class ServiciosEnReciboEntity {
 
 	@Transient
 	private Double subTotal;
+	
+	@Transient
+	private Servicio servicio;
 
 	public Double obtenerSubtotal() {
 		if (this.precio > 0 && this.cantidad > 0) {

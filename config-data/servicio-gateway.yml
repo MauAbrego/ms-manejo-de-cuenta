@@ -1,0 +1,27 @@
+server:
+  port: 8090
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka/
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: microservicio-cuenta
+          uri: lb://microservicio-cuenta
+          predicates:
+            - Path=/cuenta/**
+        - id: microservicio-servicios
+          uri: lb://microservicio-servicios
+          predicates:
+            - Path=/servicios/**
+        - id: microservicio-pagos
+          uri: lb://microservicio-pagos
+          predicates:
+            - Path=/recibo/**
