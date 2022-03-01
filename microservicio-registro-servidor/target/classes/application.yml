@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: registro-ms
+  cloud:
+    config:
+      uri: http://localhost:8080
+      username: root
+      password: s3cr3t
+
