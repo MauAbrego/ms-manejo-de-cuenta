@@ -1,0 +1,17 @@
+server:
+  port: 8080
+#configuracion de conexion con archivos en git
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/MauAbrego/ms-manejo-de-cuenta.git
+          searchPaths: config-data
+          username: ${user.name}
+          password: ${user.password}
+  security:
+    user:
+      name: root
+      password: s3cr3t
+    
