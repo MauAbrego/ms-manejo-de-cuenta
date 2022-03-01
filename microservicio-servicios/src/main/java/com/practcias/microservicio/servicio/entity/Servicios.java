@@ -26,7 +26,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name="tbl_servicios")
 @Data
 @AllArgsConstructor @NoArgsConstructor @Builder
 public class Servicios {

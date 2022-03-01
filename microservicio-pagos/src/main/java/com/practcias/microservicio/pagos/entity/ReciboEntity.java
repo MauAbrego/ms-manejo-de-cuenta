@@ -27,7 +27,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "recibos")
+@Table(name = "tbl_recibos")
 public class ReciboEntity {
 
 	@Id
